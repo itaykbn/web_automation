@@ -1,4 +1,3 @@
 #packages to install
-selenium
-web-driver
+selenium\
 webdriver_manager

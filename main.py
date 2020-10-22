@@ -1,3 +1,5 @@
+import json
+
 from selenium import webdriver
 from selenium.webdriver import ChromeOptions
 from selenium.webdriver.support.ui import WebDriverWait
@@ -18,15 +20,20 @@ WHATSAPP = Whatsapp(driver, wait)
 
 def main():
     global driver
+    with open("credentials.json", "r",encoding="utf8") as f:
+        data = json.load(f)
+        whatsapp_contacts = data["contacts"]["whatsapp"]
+        gmail_contacts = data["contacts"]["Gmail"]
 
     set_up()
 
-    GOOGLE.send_email("itay.kbn@gmail.com", "testing auto email from python in parallel with whatsapp - finally","hello from python, don't worry about the warning message i'm doing that to bypass the google block ")
+    GOOGLE.send_email(gmail_contacts["Me"], "testing auto email from python in parallel with whatsapp - finally",
+                      "hello from python, don't worry about the warning message i'm doing that to bypass the google block ")
 
-    WHATSAPP.send_whatsapp("לבד,בדד,גלמוד😭", "hello from python- finally")
+    WHATSAPP.send_whatsapp(whatsapp_contacts["Me"], "hello from python- finally")
 
-    WHATSAPP.get_whatsapp("לבד,בדד,גלמוד😭")
-    WHATSAPP.get_whatsapp("יא פיזיקה עם דודי")
+    WHATSAPP.get_whatsapp(whatsapp_contacts["Me"])
+    WHATSAPP.get_whatsapp(whatsapp_contacts["Physics"])
 
     gmail_messages = GOOGLE.get_inbox()
 

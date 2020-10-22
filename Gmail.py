@@ -2,14 +2,15 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 import time
 import json
+import io
 
 
 class Gmail:
     def __init__(self, driver, wait):
-        with open("credentials.json", "r") as f:
-            credentials = json.load(f)
-            self.gmailId = credentials["account"]
-            self.password = credentials["password"]
+        with open("credentials.json", "r", encoding="utf8") as f:
+            data = json.load(f)
+            self.gmailId = data["credentials"]["account"]
+            self.password = data["credentials"]["password"]
         self.driver = driver
         self.wait = wait
 
