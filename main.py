@@ -24,9 +24,21 @@ GOOGLE = Gmail(driver, wait)
 WHATSAPP = Whatsapp(driver, wait)
 
 
+def get_presentable_json(json_str):
+    final_string = "contacts:\n"
+    i = 0
+    final_string = "contacts"
+    for contact in json_str:
+        final_string += contact
+        final_string += f"({i})\n"
+        i += 1
+    return final_string
+
+
 def handle_gmail_client():
     global gmail_contacts
-    contact = input(f"pick one of the contacts: {gmail_contacts}\n:  ")
+    contacts = get_presentable_json(gmail_contacts)
+    contact = int(input(f"pick a number of the below:\n {contacts}\n:  "))
     subject = input(f"enter message subject for {gmail_contacts[contact]}")
     message = input(f"enter message to send to {gmail_contacts[contact]}")
     GOOGLE.send_email(gmail_contacts[contact], subject, message)
@@ -34,8 +46,10 @@ def handle_gmail_client():
 
 def handle_whatsapp_client():
     global whatsapp_contacts
-    target = input("have you come to get message or send one?(y for send / n for get")
-    contact = input(f"pick one of the contacts: {whatsapp_contacts}\n:  ")
+    target = input("have you come to get message or send one?(y for send / n for get): ")
+    contacts = get_presentable_json(whatsapp_contacts)
+    contact = int(input(f"pick one of the below:\n {contacts}\n:  "))
+
     if target.lower() == "y":
         message = input(f"enter message to send to {f'{whatsapp_contacts[contact]}'}")
         WHATSAPP.send_whatsapp(f'{whatsapp_contacts[contact]}', message)
